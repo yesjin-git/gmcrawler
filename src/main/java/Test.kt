@@ -59,17 +59,22 @@ class Main() {
         //create topCategory list
         val topCategories: List<TopCategory> = titleElements.foldIndexed(ArrayList()) { index, categoryLists, el ->
             val title = el.text
+
             //find mid category in top category
             val midCategories: List<Category> = document.findElements(
+
                 // find mid categories a tags in index+1 th category
                 // nth-child starts with 1 not 0. so you need to plus 1
                 By.ByCssSelector("#gnb > .mid-cate>  li:nth-child(${index + 1}) > a:not(.arrow)")
+
             //create mid category list
             ).fold(ArrayList(index)) { acc, categoryEl ->
                 val pattern = "category=([0-9])\\w+'".toRegex()
                 acc.add(
                     Category(
                         categoryEl.text,
+
+                        // get category number
                         // ex) javascript:GoSNAChannel('CCP0A003', 'http://browse.gmarket.co.kr/list?category=200000458', '')
                         pattern.find(categoryEl.getAttribute("href"))
                             ?.value?.slice(IntRange(9, 17))?.toInt() ?: -1
